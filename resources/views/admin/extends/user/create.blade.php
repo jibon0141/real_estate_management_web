@@ -29,17 +29,6 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
-                                Username <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="user_name" value="{{ old('user_name') }}"
-                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                   placeholder="Enter username">
-                            @error('user_name')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="mb-2 text-sm font-medium text-gray-600">
                                 Full Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="name" value="{{ old('name') }}"
@@ -79,6 +68,18 @@
                         </div>
                         <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
+                                Reference ID
+                            </label>
+                            <input type="text" name="ref_id" value="{{ old('ref_id') }}"
+                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
+                                   placeholder="Enter reference ID">
+                            @error('ref_id')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label class="mb-2 text-sm font-medium text-gray-600">
                                 Password <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
@@ -102,19 +103,20 @@
                                        placeholder="Confirm password">
                             </div>
                         </div>
+
                         <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
                                 Status <span class="text-red-500">*</span>
                             </label>
                             <div class="flex gap-4 h-11 items-center">
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="status" value="1" {{ old('status', '1') == '1' ? 'checked' : '' }}
-                                           class="text-indigo-600 focus:ring-indigo-500 rounded-full">
+                                    <input type="radio" name="status" value="1" {{ old('status') == '1' ? 'checked' : '' }}
+                                    class="text-indigo-600 focus:ring-indigo-500 rounded-full">
                                     <span class="text-sm text-gray-600">Active</span>
                                 </label>
                                 <label class="inline-flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="status" value="0" {{ old('status') == '0' ? 'checked' : '' }}
-                                           class="text-red-500 focus:ring-red-400 rounded-full">
+                                    <input type="radio" name="status" value="0" {{ old('status', '0') == '0' ? 'checked' : '' }}
+                                    class="text-red-500 focus:ring-red-400 rounded-full">
                                     <span class="text-sm text-gray-600">Inactive</span>
                                 </label>
                             </div>
@@ -122,6 +124,7 @@
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>
+
                     </div>
                     <div class="mt-8 pt-5 border-t border-gray-100 flex flex-col sm:flex-row justify-end gap-3">
                         <a href="{{ route('admin.user.index') }}"

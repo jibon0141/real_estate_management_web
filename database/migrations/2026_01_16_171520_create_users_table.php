@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('role')->nullable();
             $table->string('user_type');
-            $table->string('ref_id')->nulllable();
-            $table->tinyInteger('status');
+            $table->string('ref_id')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0=inactive,1=active');
             $table->rememberToken();
             $table->timestamps();
         });

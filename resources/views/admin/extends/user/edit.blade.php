@@ -30,17 +30,6 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
-                                Username <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="user_name" value="{{ old('user_name', $user->user_name) }}"
-                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                   placeholder="Enter username">
-                            @error('user_name')
-                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="flex flex-col">
-                            <label class="mb-2 text-sm font-medium text-gray-600">
                                 Full Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" name="name" value="{{ old('name', $user->name) }}"
@@ -75,6 +64,17 @@
                                        placeholder="Enter phone number">
                             </div>
                             @error('phone')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="mb-2 text-sm font-medium text-gray-600">
+                                Reference ID
+                            </label>
+                            <input type="text" name="ref_id" value="{{ old('ref_id', $user->ref_id) }}"
+                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
+                                   placeholder="Enter reference ID">
+                            @error('ref_id')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>

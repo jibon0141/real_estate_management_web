@@ -5,38 +5,34 @@
         <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
-                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                        <i class="fa fa-users text-sm"></i>
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-white shadow-lg shadow-teal-200">
+                        <i class="fa fa-percent text-sm"></i>
                     </span>
-                    User Management
+                    Commission Management
                 </h3>
-                <p class="text-sm text-gray-500 mt-1 ml-13">User Manage System</p>
+                <p class="text-sm text-gray-500 mt-1 ml-13">Manage commission types and rates</p>
             </div>
-            <a href="{{ route('admin.user.create') }}"
+            <a href="{{ route('admin.commission.create') }}"
                class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-200 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5">
                 <i class="fa fa-plus"></i>
-                Create User
+                Create Commission
             </a>
         </div>
         <div class="bg-white/80 rounded-2xl shadow-lg shadow-indigo-100/50 border border-white/50 overflow-hidden">
             <div class="p-5 border-b border-gray-100 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <i class="fa fa-list text-indigo-500"></i>
-                    <span class="font-semibold text-gray-700">All Users</span>
+                    <i class="fa fa-list text-teal-500"></i>
+                    <span class="font-semibold text-gray-700">All Commissions</span>
                 </div>
                 <span class="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">DataTable</span>
             </div>
             <div class="p-5 overflow-x-auto">
-                <table id="userTable" class="w-full">
+                <table id="commissionTable" class="w-full">
                     <thead>
                         <tr class="bg-gradient-to-r from-gray-50 to-indigo-50/50">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">#</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User Code</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ref ID</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Full Name</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Phone</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Commission Type</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Percentage</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
                     </thead>
@@ -51,39 +47,35 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
-        $('#userTable').DataTable({
+        $('#commissionTable').DataTable({
             processing: true,
             serverSide: true,
             scrollX: true,
             autoWidth: false,
-            ajax: "{{ route('admin.user.index') }}",
+            ajax: "{{ route('admin.commission.index') }}",
             columns: [
                 { data: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'user_code', name: 'user_code' },
-                { data: 'ref_id', name: 'ref_id' },
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'phone', name: 'phone' },
-                { data: 'status', orderable: false, searchable: false },
+                { data: 'commission_type', name: 'commission_type' },
+                { data: 'commission_percentage', name: 'commission_percentage' },
                 { data: 'action', orderable: false, searchable: false },
             ],
             dom: '<"flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4"lf>rt<"flex flex-col sm:flex-row items-center justify-between gap-3 mt-4"ip>',
             language: {
                 search: '',
-                searchPlaceholder: 'Search users...',
+                searchPlaceholder: 'Search commissions...',
                 processing: '<div class="flex items-center justify-center py-4"><div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div></div>'
             }
         });
         $('.dataTables_filter input').addClass('form-input !pl-9 !pr-3 !py-2 !text-sm !rounded-xl !border-gray-200 !w-64 !bg-gray-50 focus:!bg-white !transition-all');
         $('.dataTables_filter').addClass('relative');
         $('.dataTables_filter').prepend('<i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm z-10 pointer-events-none"></i>');
-        $('#userTable_length select').addClass('form-input !py-1.5 !px-3 !text-sm !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white !transition-all !w-20');
-        $('#userTable_length label').addClass('text-sm text-gray-500 flex items-center gap-2');
+        $('#commissionTable_length select').addClass('form-input !py-1.5 !px-3 !text-sm !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white !transition-all !w-20');
+        $('#commissionTable_length label').addClass('text-sm text-gray-500 flex items-center gap-2');
     });
     function deleteItem(id) {
         Swal.fire({
             title: 'Are you sure?',
-            text: "This user will be permanently deleted!",
+            text: "This commission will be permanently deleted!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -93,7 +85,7 @@
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`/admin/user/delete/${id}`, {
+                fetch(`/admin/commission/delete/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}",
@@ -110,7 +102,7 @@
                                 timer: 1500,
                                 showConfirmButton: false
                             });
-                            $('#userTable').DataTable().ajax.reload(null, false);
+                            $('#commissionTable').DataTable().ajax.reload(null, false);
                         } else {
                             Swal.fire({
                                 icon: 'error',

@@ -18,17 +18,20 @@ class UserController extends Controller
 
             return Datatables::of($users)
                 ->addIndexColumn()
-                ->addColumn('user_name', function ($row) {
-                    return $row->user_name ?? 'N/A';
+                ->addColumn('user_code', function ($row) {
+                    return $row->user_id ?? '-';
+                })
+                ->addColumn('ref_id', function ($row) {
+                    return $row->ref_id ?? '-';
                 })
                 ->addColumn('name', function ($row) {
-                    return $row->name ?? 'N/A';
+                    return $row->name ?? '-';
                 })
                 ->addColumn('email', function ($row) {
-                    return $row->email ?? 'N/A';
+                    return $row->email ?? '-';
                 })
                 ->addColumn('phone', function ($row) {
-                    return $row->phone ?? 'N/A';
+                    return $row->phone ?? '-';
                 })
                 ->addColumn('status', function ($row) {
                     return $row->status
@@ -59,31 +62,39 @@ class UserController extends Controller
     {
         if ($request->isMethod('POST')) {
             $request->validate([
-                'user_name' => 'required|string|max:50|unique:users,user_name',
+                'ref_id'    => 'nullable|string|max:50',
                 'name'      => 'required|string|max:100',
                 'phone'     => 'required|unique:users,phone|digits_between:1,11',
                 'email'     => 'nullable|email|unique:users,email',
-                'status'    => 'required',
                 'password'  => 'required|min:6|confirmed',
             ]);
 
             try {
-                $user=User::create([
-                    'user_name' => $request->user_name,
-                    'name'      => $request->name,
-                    'phone'     => $request->phone,
-                    'email'     => $request->email,
-                    'user_type' => "user",
-                    'status'    => $request->status,
-                    'password'  => Hash::make($request->password),
-                    'created_at' => now(),
+
+                if($request->ref_id){
+                    $check = User::where('user_id',$request->ref_id)->first();
+                    if(empty($check)){
+                        Log::info('Invalid Reference Id!');
+                        return redirect()->back()->with('success','Invalid Reference Id!');
+                    }
+                }
+
+                $user = User::create([
+                    'ref_id'      => $request->ref_id,
+                    'name'        => $request->name,
+                    'phone'       => $request->phone,
+                    'email'       => $request->email,
+                    'user_type'   => "user",
+                    'status'      => 0,
+                    'password'    => Hash::make($request->password),
+                    'created_at'  => now(),
                 ]);
 
-                Log::info('User Created Successfully');
-                return redirect()->back()->with('success', 'User Created Successfully.');
+                Log::info('User Created Successfully!');
+                return redirect()->back()->with('success', 'User Created Successfully!');
             } catch (\Exception $e) {
                 Log::error($e->getMessage());
-                return redirect()->back()->with('error', 'User Create Failed.');
+                return redirect()->back()->with('error', 'User Create Failed!');
             }
         }
         return view('admin.extends.user.create');
@@ -111,7 +122,7 @@ class UserController extends Controller
         }
 
         $request->validate([
-            'user_name' => 'required|string|max:50|unique:users,user_name,' . $id,
+            'ref_id'    => 'nullable|string|max:50',
             'name'      => 'required|string|max:100',
             'phone'     => 'required|unique:users,phone,' . $id . '|digits_between:1,11',
             'email'     => 'nullable|email|unique:users,email,' . $id,
@@ -120,8 +131,17 @@ class UserController extends Controller
         ]);
 
         try {
+
+            if($request->ref_id){
+                $check = User::where('user_id',$request->ref_id)->first();
+                if(empty($check)){
+                    Log::info('Invalid Reference Id!');
+                    return redirect()->back()->with('success','Invalid Reference Id!');
+                }
+            }
+
             $data = [
-                'user_name' => $request->user_name,
+                'ref_id'    => $request->ref_id,
                 'name'      => $request->name,
                 'phone'     => $request->phone,
                 'email'     => $request->email,
@@ -143,7 +163,7 @@ class UserController extends Controller
                 'error'   => $e->getMessage(),
             ]);
 
-            return redirect()->back()->with('error', 'User Update Failed.');
+            return redirect()->back()->with('error', 'User Update Failed!');
         }
     }
 
@@ -158,7 +178,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'User not found.'
+                'message' => 'User not found!'
             ], 404);
         }
 
@@ -171,7 +191,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'User deleted successfully.'
+                'message' => 'User deleted successfully!'
             ], 200);
         } catch (\Exception $e) {
             Log::error('User Delete Failed', [
@@ -181,7 +201,7 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'User delete failed.'
+                'message' => 'User delete failed!'
             ], 500);
         }
     }
