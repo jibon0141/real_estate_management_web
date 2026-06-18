@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('user_name');
+            $table->string('user_id')->nullable()->unique();
             $table->string('name');
             $table->string('phone')->nullable()->unique();
             $table->string('email')->unique()->nullable();
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('role')->nullable();
             $table->string('user_type');
+            $table->string('ref_id')->nulllable();
             $table->tinyInteger('status');
             $table->rememberToken();
             $table->timestamps();
