@@ -68,7 +68,7 @@ class UserController extends Controller
             ]);
 
             try {
-                User::create([
+                $user=User::create([
                     'user_name' => $request->user_name,
                     'name'      => $request->name,
                     'phone'     => $request->phone,
@@ -78,6 +78,7 @@ class UserController extends Controller
                     'password'  => Hash::make($request->password),
                     'created_at' => now(),
                 ]);
+
                 Log::info('User Created Successfully');
                 return redirect()->back()->with('success', 'User Created Successfully.');
             } catch (\Exception $e) {

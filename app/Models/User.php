@@ -18,11 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_name',
         'name',
+        'user_id',
         'phone',
         'email',
         'user_type',
+        'ref_id',
         'status',
         'password',
         'role'
@@ -48,6 +49,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
     ];
+
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $user->user_id = 'LDZ';
+        });
+
+        static::created(function ($user) {
+            $user->user_id = 'LDZ' . str_pad($user->id, 6, '0', STR_PAD_LEFT);
+            $user->save();
+        });
+    }
 
 
 }
