@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'user_type',
         'ref_id',
+        'designation_id',
         'status',
         'password',
         'role'
@@ -49,6 +50,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',
     ];
+
+    public function designation(){
+        return $this->hasOne(Designation::class,'designation_id');
+    }
 
 
     protected static function booted()

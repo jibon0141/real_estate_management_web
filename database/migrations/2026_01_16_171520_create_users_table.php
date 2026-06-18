@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('role')->nullable();
             $table->string('user_type');
             $table->string('ref_id')->nullable();
-            $table->tinyInteger('status')->default(0)->comment('0=inactive,1=active');
+            $table->tinyInteger('designation_id')->default(1)
+                ->comment('1 = Associate Partner,2 = Property Partner, 3 = Manager, 4 = General Manager, 5 = Deputy Director, 6 = Director');
+            $table->tinyInteger('status')->default(0)->comment('0 = inactive,1 = active');
             $table->rememberToken();
             $table->timestamps();
         });
