@@ -48,27 +48,16 @@ class MainAccountController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $editUrl = route('admin.account.edit', $row->id);
-                    $deleteUrl = route('admin.account.delete', $row->id);
 
-                    $buttons = '<div class="flex gap-2">';
-
-                    // Edit button
-                    $buttons .= '<a href="' . $editUrl . '"
-                     class="inline-flex items-center px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded"
-                     title="Edit">
-                     <i class="fa fa-edit"></i>
-                 </a>';
-
-                    // Delete button
-//                    $buttons .= '<button onclick="deleteItem(' . $row->id . ')"
-//                         class="inline-flex items-center px-2 py-1 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded"
-//                         title="Delete">
-//                     <i class="fa fa-trash"></i>
-//                 </button>';
-
-                    $buttons .= '</div>';
-
-                    return $buttons;
+                    return '
+    <div class="flex gap-1.5">
+        <a href="' . $editUrl . '"
+           class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-sm shadow-sky-200 hover:shadow-md hover:shadow-sky-300 hover:-translate-y-0.5 transition-all duration-200"
+           title="Edit">
+            <i class="fa fa-edit text-xs"></i>
+        </a>
+    </div>
+    ';
                 })
                 ->rawColumns(['status', 'is_default', 'action'])
                 ->make(true);

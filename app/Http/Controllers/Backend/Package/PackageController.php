@@ -89,8 +89,6 @@ class PackageController extends Controller
 
     public function create(Request $request)
     {
-        $projects = Project::where('status', 1)->get();
-
         if ($request->isMethod('POST')) {
             $request->validate([
                 'project_id'     => 'required|exists:projects,id',
@@ -127,7 +125,7 @@ class PackageController extends Controller
                 return redirect()->back()->with('error', 'Package Create Failed.');
             }
         }
-
+        $projects = Project::where('status', 1)->get();
         return view('admin.extends.package.create', compact('projects'));
     }
 
