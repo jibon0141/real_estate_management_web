@@ -1,6 +1,7 @@
 @extends("admin.master")
 @section("content")
 <div class="page-wrapper p-4 sm:p-6 lg:p-8" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);">
+    @include('admin.include.message')
     <div class="content container mx-auto px-4 overflow-y-auto py-6">
         <!-- Page Header -->
         <div class="mb-6">

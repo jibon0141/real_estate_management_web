@@ -31,7 +31,7 @@
     @endif
 
     <main class="flex-grow px-3 sm:px-5 lg:px-8 py-5">
-        @include('admin.include.message')
+{{--        @include('admin.include.message')--}}
         @yield('content')
     </main>
 

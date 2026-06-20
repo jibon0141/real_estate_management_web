@@ -2,6 +2,7 @@
 @section("content")
 <div class="page-wrapper bg-white p-4 sm:p-6 lg:p-8 rounded shadow" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);">
     <div class="content container mx-auto px-4 overflow-y-auto">
+        @include('admin.include.message')
         <!-- Page Header -->
         <div class="mb-6">
             <div class="flex flex-col md:flex-row items-center justify-between mt-5">
