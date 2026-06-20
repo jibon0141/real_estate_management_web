@@ -38,7 +38,7 @@
                 <span class="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">DataTable</span>
             </div>
             <div class="p-5 overflow-x-auto">
-                <table id="packageTable" class="w-full">
+                <table id="packageTable" class="w-full" style="min-width: 1200px;">
                     <thead>
                         <tr class="bg-gradient-to-r from-gray-50 to-indigo-50/50">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">#</th>
@@ -49,6 +49,7 @@
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Return Amount</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Share Count</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Extra Benefit</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Allotted Share</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
@@ -70,6 +71,15 @@
             scrollX: true,
             autoWidth: false,
             ajax: "{{ route('admin.package.index') }}",
+            columnDefs: [
+                { width: 40, targets: 0 },
+                { width: 120, targets: 1 },
+                { width: 150, targets: 2 },
+                { width: 120, targets: 3 },
+                { width: 100, targets: [4, 5, 6, 7, 8] },
+                { width: 90, targets: 9 },
+                { width: 120, targets: 10 },
+            ],
             columns: [
                 { data: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'package_no', name: 'package_no' },
@@ -79,6 +89,7 @@
                 { data: 'return_amount', name: 'return_amount' },
                 { data: 'share_count', name: 'share_count' },
                 { data: 'extra_benefit', name: 'extra_benefit' },
+                { data: 'allotted_share', name: 'allotted_share' },
                 { data: 'status', name: 'status' },
                 { data: 'action', orderable: false, searchable: false },
             ],

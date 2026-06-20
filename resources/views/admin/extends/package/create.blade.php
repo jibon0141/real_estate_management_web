@@ -111,6 +111,17 @@
                         </div>
                         <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
+                                Allotted Share <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="allotted_share" value="{{ old('allotted_share') }}"
+                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
+                                   placeholder="Enter allotted share" step="0.01" min="0">
+                            @error('allotted_share')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="mb-2 text-sm font-medium text-gray-600">
                                 Status <span class="text-red-500">*</span>
                             </label>
                             <div class="flex gap-4 h-11 items-center">

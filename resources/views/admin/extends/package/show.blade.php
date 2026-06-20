@@ -137,6 +137,20 @@
                         </div>
                     </div>
 
+                    <div class="relative group bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-5 border border-orange-200/50 hover:shadow-lg hover:shadow-orange-200/40 hover:-translate-y-0.5 transition-all duration-300">
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-orange-400/10 rounded-full blur-md"></div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white shadow-md shadow-orange-200">
+                                <i class="fa fa-pie-chart text-xs"></i>
+                            </span>
+                            <span class="text-xs font-semibold text-orange-600 uppercase tracking-wider">Allotted Share</span>
+                        </div>
+                        <div class="relative text-3xl font-extrabold text-gray-800 tracking-tight">{{ $package->allotted_share ? number_format($package->allotted_share, 2) : '0.00' }}
+
+                            <div class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-orange-400/30 blur-sm"></div>
+                        </div>
+                    </div>
+
                     <div class="relative group bg-gradient-to-br from-cyan-50 to-cyan-100/50 rounded-xl p-5 border border-cyan-200/50 hover:shadow-lg hover:shadow-cyan-200/40 hover:-translate-y-0.5 transition-all duration-300">
                         <div class="absolute -top-2 -right-2 w-8 h-8 bg-cyan-400/10 rounded-full blur-md"></div>
                         <div class="flex items-center gap-3 mb-2">

@@ -39,6 +39,9 @@ class PackageController extends Controller
                 ->addColumn('extra_benefit', function ($row) {
                     return number_format($row->extra_benefit, 2) ?? 'N/A';
                 })
+                ->addColumn('allotted_share', function ($row) {
+                    return number_format($row->allotted_share, 2) ?? 'N/A';
+                })
                 ->addColumn('status', function ($row) {
                     return $row->status == 1
                         ? '<span class="px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Active</span>'
@@ -92,28 +95,42 @@ class PackageController extends Controller
         if ($request->isMethod('POST')) {
             $request->validate([
                 'project_id'     => 'required|exists:projects,id',
-                'package_name'   => 'required|string|max:255',
+                'package_name'   => 'required|string|max:255|unique:packages,package_name,NULL,id,project_id,' . $request->project_id,
                 'package_price'  => 'required|numeric|min:0',
                 'return_amount'  => 'required|numeric|min:0',
                 'return_time'    => 'required|string|max:255',
                 'extra_benefit'  => 'nullable|numeric|min:0',
                 'share_count'    => 'required|numeric|min:0',
+                'allotted_share' => [
+                    'required', 'numeric', 'min:0',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $project = Project::find($request->project_id);
+                        if ($project) {
+                            $alreadyAllotted = Package::where('project_id', $request->project_id)->sum('allotted_share');
+                            if (($alreadyAllotted + $value) > $project->total_share) {
+                                $remaining = $project->total_share - $alreadyAllotted;
+                                $fail('Only ' . number_format(max($remaining, 0), 2) . ' shares left to allot for this project.');
+                            }
+                        }
+                    },
+                ],
                 'description'    => 'nullable|string',
                 'status'         => 'required|in:0,1',
             ]);
 
             try {
                 $data = [
-                    'project_id'    => $request->project_id,
-                    'package_name'  => $request->package_name,
-                    'package_price' => $request->package_price,
-                    'return_amount' => $request->return_amount,
-                    'return_time'   => $request->return_time,
-                    'extra_benefit' => $request->extra_benefit,
-                    'share_count'   => $request->share_count,
-                    'description'   => $request->description,
-                    'status'        => $request->status,
-                    'created_at'    => now(),
+                    'project_id'     => $request->project_id,
+                    'package_name'   => $request->package_name,
+                    'package_price'  => $request->package_price,
+                    'return_amount'  => $request->return_amount,
+                    'return_time'    => $request->return_time,
+                    'extra_benefit'  => $request->extra_benefit,
+                    'share_count'    => $request->share_count,
+                    'allotted_share' => $request->allotted_share,
+                    'description'    => $request->description,
+                    'status'         => $request->status,
+                    'created_at'     => now(),
                 ];
 
                 Package::create($data);
@@ -153,27 +170,43 @@ class PackageController extends Controller
 
         $request->validate([
             'project_id'     => 'required|exists:projects,id',
-            'package_name'   => 'required|string|max:255',
+            'package_name'   => 'required|string|max:255|unique:packages,package_name,' . $id . ',id,project_id,' . $request->project_id,
             'package_price'  => 'required|numeric|min:0',
             'return_amount'  => 'required|numeric|min:0',
             'return_time'    => 'required|string|max:255',
             'extra_benefit'  => 'nullable|numeric|min:0',
             'share_count'    => 'required|numeric|min:0',
+            'allotted_share' => [
+                'required', 'numeric', 'min:0',
+                function ($attribute, $value, $fail) use ($request, $id) {
+                    $project = Project::find($request->project_id);
+                    if ($project) {
+                        $alreadyAllotted = Package::where('project_id', $request->project_id)
+                            ->where('id', '!=', $id)
+                            ->sum('allotted_share');
+                        if (($alreadyAllotted + $value) > $project->total_share) {
+                            $remaining = $project->total_share - $alreadyAllotted;
+                            $fail('Only ' . number_format(max($remaining, 0), 2) . ' shares left to allot for this project.');
+                        }
+                    }
+                },
+            ],
             'description'    => 'nullable|string',
             'status'         => 'required|in:0,1',
         ]);
 
         try {
             $data = [
-                'project_id'    => $request->project_id,
-                'package_name'  => $request->package_name,
-                'package_price' => $request->package_price,
-                'return_amount' => $request->return_amount,
-                'return_time'   => $request->return_time,
-                'extra_benefit' => $request->extra_benefit,
-                'share_count'   => $request->share_count,
-                'description'   => $request->description,
-                'status'        => $request->status,
+                'project_id'     => $request->project_id,
+                'package_name'   => $request->package_name,
+                'package_price'  => $request->package_price,
+                'return_amount'  => $request->return_amount,
+                'return_time'    => $request->return_time,
+                'extra_benefit'  => $request->extra_benefit,
+                'share_count'    => $request->share_count,
+                'allotted_share' => $request->allotted_share,
+                'description'    => $request->description,
+                'status'         => $request->status,
             ];
 
             $package->update($data);

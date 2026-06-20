@@ -18,6 +18,7 @@ class Package extends Model
         'return_time',
         'extra_benefit',
         'share_count',
+        'allotted_share',
         'description',
         'status',
     ];

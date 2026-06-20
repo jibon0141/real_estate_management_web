@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('return_time');
             $table->decimal('extra_benefit', 10, 2)->default(0);
             $table->decimal('share_count', 10, 2)->default(0);
+            $table->decimal('allotted_share', 10, 2)->default(0);
             $table->longText('description')->nullable();
             $table->tinyInteger('status')->default('1')->comment('0 = inactive,1 = active');
             $table->timestamps();
