@@ -37,8 +37,8 @@ class HomeController extends Controller
                 return redirect()->back()->with('error', 'Invalid credentials for admin login.');
             }
 
-            // User login via ref_id + password (user_type must be user)
-            if (Auth::attempt(['ref_id' => $request->login_info, 'password' => $request->password], $remember)) {
+            // User login via user_id + password (user_type must be user)
+            if (Auth::attempt(['user_id' => $request->login_info, 'password' => $request->password], $remember)) {
                 if (Auth::user()->user_type === 'user') {
                     return redirect('/user/dashboard')->with('success', 'Welcome To User Panel!');
                 }

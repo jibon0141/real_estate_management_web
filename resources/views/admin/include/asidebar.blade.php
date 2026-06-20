@@ -27,7 +27,7 @@
             </svg>
             <span class="sidebar-nav-text">Dashboard</span>
         </a>
-        
+
         <div class="sidebar-dropdown">
             <button class="sidebar-dropdown-btn" onclick="toggleSidebarDropdown(this)">
                 <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,12 +75,25 @@
                 </svg>
             </button>
             <div class="sidebar-dropdown-menu hidden">
-                <a href="{{ route('admin.commission-setting.index') }}">Revenue Configuration</a>
-                <a href="{{ route('admin.set-commission.index') }}">Revenue Distribution</a>
+                <a href="{{ route('admin.commission-setting.index') }}">Commission Settings</a>
+                <a href="{{ route('admin.set-commission.index') }}">Set Commission</a>
             </div>
         </div>
 
-
+        <div class="sidebar-dropdown">
+            <button class="sidebar-dropdown-btn" onclick="toggleSidebarDropdown(this)">
+                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+                </svg>
+                <span class="sidebar-nav-text">Project Management</span>
+                <svg class="sidebar-dropdown-arrow w-4 h-4 ml-auto transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+            </button>
+            <div class="sidebar-dropdown-menu hidden">
+                <a href="{{ route('admin.project.index') }}">Project Management</a>
+            </div>
+        </div>
 
     </nav>
 
