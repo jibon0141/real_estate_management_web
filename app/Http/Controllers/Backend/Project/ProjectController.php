@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\Package;
 use App\Models\Project;
 use App\Traits\ManageImage;
 use Illuminate\Http\Request;
@@ -171,6 +172,17 @@ class ProjectController extends Controller
         }
 
         try {
+            $package = Package::where('project_id', $project->id)->first();
+
+            if(!empty($package)){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Project can not be deleted, it is associated with package.'
+                ], 400);
+
+            }
+
+
             if ($project->image) {
                 $this->destroyImage($project->image, 'image/project');
             }

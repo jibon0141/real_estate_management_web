@@ -1,4 +1,14 @@
 @extends('admin.master')
+@section('app_styles')
+<style>
+    #packageTable tbody tr:nth-child(even) {
+        background-color: #f8fafc;
+    }
+    #packageTable tbody tr:hover {
+        background-color: #eef2ff;
+    }
+</style>
+@endsection
 @section('content')
 <div class="page-wrapper min-h-screen p-4 sm:p-6 lg:p-8" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);">
     <div class="max-w-7xl mx-auto">
@@ -38,6 +48,7 @@
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Price</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Return Amount</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Share Count</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Extra Benefit</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
                         </tr>
@@ -67,9 +78,11 @@
                 { data: 'package_price', name: 'package_price' },
                 { data: 'return_amount', name: 'return_amount' },
                 { data: 'share_count', name: 'share_count' },
+                { data: 'extra_benefit', name: 'extra_benefit' },
                 { data: 'status', name: 'status' },
                 { data: 'action', orderable: false, searchable: false },
             ],
+            stripeClasses: [],
             dom: '<"flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4"lf>rt<"flex flex-col sm:flex-row items-center justify-between gap-3 mt-4"ip>',
             language: {
                 search: '',

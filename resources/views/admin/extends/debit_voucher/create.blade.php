@@ -78,14 +78,6 @@
 </div>
 @endsection
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-<style>
-.select2-container { width: 100% !important; }
-.select2-selection--single { height: 44px !important; border: 1px solid #d1d5db !important; border-radius: 0.375rem !important; }
-.select2-selection__rendered { line-height: 44px !important; }
-</style>
 <script>
 $(document).ready(function () {
     let rowCount = 0;

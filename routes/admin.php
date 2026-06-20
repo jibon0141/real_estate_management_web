@@ -82,6 +82,7 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
     // Package Route
     Route::group(['namespace'=>'Package'],function(){
         Route::get('/package',[PackageController::class,'index'])->name('admin.package.index');
+        Route::get('/package/show/{id}',[PackageController::class,'show'])->name('admin.package.show');
         Route::match(['get','post'],'/package/create',[PackageController::class,'create'])->name('admin.package.create');
         Route::get('/package/edit/{id}',[PackageController::class,'edit'])->name('admin.package.edit');
         Route::put('/package/update/{id}',[PackageController::class,'update'])->name('admin.package.update');

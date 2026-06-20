@@ -36,21 +36,34 @@ class PackageController extends Controller
                 ->addColumn('share_count', function ($row) {
                     return $row->share_count ?? 'N/A';
                 })
+                ->addColumn('extra_benefit', function ($row) {
+                    return number_format($row->extra_benefit, 2) ?? 'N/A';
+                })
                 ->addColumn('status', function ($row) {
                     return $row->status == 1
                         ? '<span class="px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Active</span>'
                         : '<span class="px-3 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">Inactive</span>';
                 })
                 ->addColumn('action', function ($row) {
+                    $showUrl = route('admin.package.show', $row->id);
                     $editUrl = route('admin.package.edit', $row->id);
 
                     return '
-    <div class="flex gap-2">
-        <a href="' . $editUrl . '" class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded">
-            <i class="fa fa-edit"></i>
+    <div class="flex gap-1.5">
+        <a href="' . $showUrl . '"
+           class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-green-500 hover:from-emerald-500 hover:to-green-600 text-white shadow-sm shadow-emerald-200 hover:shadow-md hover:shadow-emerald-300 hover:-translate-y-0.5 transition-all duration-200"
+           title="View">
+            <i class="fa fa-eye text-xs"></i>
         </a>
-        <button onclick="deleteItem(' . $row->id . ')" class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white text-xs rounded">
-            <i class="fa fa-trash"></i>
+        <a href="' . $editUrl . '"
+           class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-sm shadow-sky-200 hover:shadow-md hover:shadow-sky-300 hover:-translate-y-0.5 transition-all duration-200"
+           title="Edit">
+            <i class="fa fa-edit text-xs"></i>
+        </a>
+        <button onclick="deleteItem(' . $row->id . ')"
+                class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-rose-400 to-red-500 hover:from-rose-500 hover:to-red-600 text-white shadow-sm shadow-rose-200 hover:shadow-md hover:shadow-rose-300 hover:-translate-y-0.5 transition-all duration-200"
+                title="Delete">
+            <i class="fa fa-trash text-xs"></i>
         </button>
     </div>
     ';
@@ -60,6 +73,18 @@ class PackageController extends Controller
         }
 
         return view('admin.extends.package.index');
+    }
+
+    public function show($id)
+    {
+        $package = Package::with('project')->where('id', $id)->first();
+
+        if (empty($package)) {
+            Log::info('Package Not Found', ['package_id' => $id]);
+            return redirect()->back()->with('error', 'Package Not Found.');
+        }
+
+        return view('admin.extends.package.show', compact('package'));
     }
 
     public function create(Request $request)

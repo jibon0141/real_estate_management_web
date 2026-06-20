@@ -91,7 +91,7 @@
                             </label>
                             <input type="text" name="return_time" value="{{ old('return_time', $package->return_time) }}"
                                    class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                   placeholder="e.g. 6 months, 1 year">
+                                   placeholder="e.g. 6 months, 12 months">
                             @error('return_time')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
@@ -113,7 +113,7 @@
                             </label>
                             <input type="number" name="extra_benefit" value="{{ old('extra_benefit', $package->extra_benefit) }}"
                                    class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                   placeholder="Enter extra benefit amount" step="0.01" min="0">
+                                   placeholder="Enter extra benefit share" step="0.01" min="0">
                             @error('extra_benefit')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
@@ -168,14 +168,6 @@
 </div>
 @endsection
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-<style>
-.select2-container { width: 100% !important; }
-.select2-selection--single { height: 44px !important; border: 1px solid #d1d5db !important; border-radius: 0.75rem !important; background-color: #f9fafb !important; }
-.select2-selection__rendered { line-height: 44px !important; }
-.select2-container--default .select2-selection--single .select2-selection__arrow { height: 44px !important; }
-</style>
 <script>
 $(document).ready(function () {
     $('#project_id').select2({
