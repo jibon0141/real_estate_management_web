@@ -3,7 +3,8 @@
 use App\Http\Controllers\Backend\Account\MainAccountController;
 use App\Http\Controllers\Backend\ChartOfAccount\ChartOfAccountController;
 use App\Http\Controllers\Backend\CommissionSetting\CommissionSettingController;
-use App\Http\Controllers\Backend\DistributeCommission\CommissionController;
+use App\Http\Controllers\Backend\Designation\DesignationController;
+use App\Http\Controllers\Backend\SetCommission\CommissionController;
 use App\Http\Controllers\Backend\CompanySetting\CompanySettingController;
 use App\Http\Controllers\Backend\CreditVoucher\CreditVoucherController;
 use App\Http\Controllers\Backend\DebitVoucher\DebitVoucherController;
@@ -85,13 +86,13 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::delete('/commission-setting/delete/{id}',[CommissionSettingController::class,'destroy'])->name('admin.commission-setting.delete');
     });
 
-    // Distribute Commission Route
-    Route::group(['namespace'=>'DistributeCommission'],function(){
-        Route::get('/distribute-commission',[CommissionController::class,'index'])->name('admin.distribute-commission.index');
-        Route::match(['get','post'],'/distribute-commission/create',[CommissionController::class,'create'])->name('admin.distribute-commission.create');
-        Route::get('/distribute-commission/edit/{id}',[CommissionController::class,'edit'])->name('admin.distribute-commission.edit');
-        Route::put('/distribute-commission/update/{id}',[CommissionController::class,'update'])->name('admin.distribute-commission.update');
-        Route::delete('/distribute-commission/delete/{id}',[CommissionController::class,'destroy'])->name('admin.distribute-commission.delete');
+    // Set Commission Route
+    Route::group(['namespace'=>'SetCommission'],function(){
+        Route::get('/set-commission',[CommissionController::class,'index'])->name('admin.set-commission.index');
+        Route::match(['get','post'],'/set-commission/create',[CommissionController::class,'create'])->name('admin.set-commission.create');
+        Route::get('/set-commission/edit/{id}',[CommissionController::class,'edit'])->name('admin.set-commission.edit');
+        Route::put('/set-commission/update/{id}',[CommissionController::class,'update'])->name('admin.set-commission.update');
+        Route::delete('/set-commission/delete/{id}',[CommissionController::class,'destroy'])->name('admin.set-commission.delete');
     });
 
     // Debit Voucher Route
@@ -121,6 +122,11 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::get('/credit-voucher/get-parties', [CreditVoucherController::class, 'getParties'])->name('admin.credit-voucher.get-parties');
         Route::get('/credit-voucher/get-bank-accounts', [CreditVoucherController::class, 'getBankAccounts'])->name('admin.credit-voucher.get-bank-accounts');
         Route::get('/credit-voucher/get-income-coa', [CreditVoucherController::class, 'getIncomeCoa'])->name('admin.credit-voucher.get-income-coa');
+    });
+
+    // Designation Route
+    Route::group(['namespace' => 'Designation'], function () {
+        Route::get('/designation',[DesignationController::class,'index'])->name('admin.designation.index');
     });
 
 

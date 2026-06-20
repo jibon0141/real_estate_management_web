@@ -52,7 +52,7 @@ class User extends Authenticatable
     ];
 
     public function designation(){
-        return $this->hasOne(Designation::class,'designation_id');
+        return $this->belongsTo(Designation::class,'designation_id');
     }
 
 
@@ -70,3 +70,4 @@ class User extends Authenticatable
 
 
 }
+

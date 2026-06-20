@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backend\DistributeCommission;
+namespace App\Http\Controllers\Backend\SetCommission;
 
 use App\Http\Controllers\Controller;
 use App\Models\Commission;
@@ -25,7 +25,7 @@ class CommissionController extends Controller
                     return $row->commission_percentage ?? '-';
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('admin.distribute-commission.edit', $row->id);
+                    $editUrl = route('admin.set-commission.edit', $row->id);
 
                     return '
     <div class="flex gap-2">
@@ -42,7 +42,7 @@ class CommissionController extends Controller
                 ->make(true);
         }
 
-        return view('admin.extends.distribute_commission.index');
+        return view('admin.extends.set_commission.index');
     }
 
     public function create(Request $request)
@@ -69,7 +69,7 @@ class CommissionController extends Controller
         }
 
         $commissionTypes = CommissionSetting::all();
-        return view('admin.extends.distribute_commission.create', compact('commissionTypes'));
+        return view('admin.extends.set_commission.create', compact('commissionTypes'));
     }
 
     public function edit($id)
@@ -82,7 +82,7 @@ class CommissionController extends Controller
         }
 
         $commissionTypes = CommissionSetting::all();
-        return view('admin.extends.distribute_commission.edit', compact('commission', 'commissionTypes'));
+        return view('admin.extends.set_commission.edit', compact('commission', 'commissionTypes'));
     }
 
     public function update(Request $request, $id)

@@ -80,14 +80,15 @@ class UserController extends Controller
                 }
 
                 $user = User::create([
-                    'ref_id'      => $request->ref_id,
-                    'name'        => $request->name,
-                    'phone'       => $request->phone,
-                    'email'       => $request->email,
-                    'user_type'   => "user",
-                    'status'      => 0,
-                    'password'    => Hash::make($request->password),
-                    'created_at'  => now(),
+                    'ref_id'          => $request->ref_id,
+                    'name'            => $request->name,
+                    'phone'           => $request->phone,
+                    'email'           => $request->email,
+                    'user_type'       => "user",
+                    'status'          => 0,
+                    'designation_id'  => 1,
+                    'password'        => Hash::make($request->password),
+                    'created_at'      => now(),
                 ]);
 
                 Log::info('User Created Successfully!');

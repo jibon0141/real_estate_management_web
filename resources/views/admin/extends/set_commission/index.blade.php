@@ -9,11 +9,11 @@
                     <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center text-white shadow-lg shadow-rose-200">
                         <i class="fa fa-hand-holding-usd text-sm"></i>
                     </span>
-                    Distribute Commission
+                    Set Commission
                 </h3>
                 <p class="text-sm text-gray-500 mt-1 ml-13">Manage commission distribution</p>
             </div>
-            <a href="{{ route('admin.distribute-commission.create') }}"
+            <a href="{{ route('admin.set-commission.create') }}"
                class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-200 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5">
                 <i class="fa fa-plus"></i>
                 Add Commission
@@ -28,7 +28,7 @@
                 <span class="text-xs text-gray-400 bg-gray-50 px-3 py-1 rounded-full">DataTable</span>
             </div>
             <div class="p-5 overflow-x-auto">
-                <table id="distributeCommissionTable" class="w-full">
+                <table id="setCommissionTable" class="w-full">
                     <thead>
                         <tr class="bg-gradient-to-r from-gray-50 to-indigo-50/50">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">#</th>
@@ -48,12 +48,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
-        $('#distributeCommissionTable').DataTable({
+        $('#setCommissionTable').DataTable({
             processing: true,
             serverSide: true,
             scrollX: true,
             autoWidth: false,
-            ajax: "{{ route('admin.distribute-commission.index') }}",
+            ajax: "{{ route('admin.set-commission.index') }}",
             columns: [
                 { data: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'commission_setting_id', name: 'commission_setting_id' },
@@ -70,8 +70,8 @@
         $('.dataTables_filter input').addClass('form-input !pl-9 !pr-3 !py-2 !text-sm !rounded-xl !border-gray-200 !w-64 !bg-gray-50 focus:!bg-white !transition-all');
         $('.dataTables_filter').addClass('relative');
         $('.dataTables_filter').prepend('<i class="fa fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm z-10 pointer-events-none"></i>');
-        $('#distributeCommissionTable_length select').addClass('form-input !py-1.5 !px-3 !text-sm !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white !transition-all !w-20');
-        $('#distributeCommissionTable_length label').addClass('text-sm text-gray-500 flex items-center gap-2');
+        $('#setCommissionTable_length select').addClass('form-input !py-1.5 !px-3 !text-sm !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white !transition-all !w-20');
+        $('#setCommissionTable_length label').addClass('text-sm text-gray-500 flex items-center gap-2');
     });
     function deleteItem(id) {
         Swal.fire({
@@ -86,7 +86,7 @@
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`/admin/distribute-commission/delete/${id}`, {
+                fetch(`/admin/set-commission/delete/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}",
@@ -103,7 +103,7 @@
                                 timer: 1500,
                                 showConfirmButton: false
                             });
-                            $('#distributeCommissionTable').DataTable().ajax.reload(null, false);
+                            $('#setCommissionTable').DataTable().ajax.reload(null, false);
                         } else {
                             Swal.fire({
                                 icon: 'error',

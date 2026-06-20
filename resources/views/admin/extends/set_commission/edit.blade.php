@@ -13,7 +13,7 @@
                 </h3>
                 <p class="text-sm text-gray-500 mt-1 ml-13">Update commission distribution</p>
             </div>
-            <a href="{{ route('admin.distribute-commission.index') }}"
+            <a href="{{ route('admin.set-commission.index') }}"
                class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium px-4 py-2.5 rounded-xl border border-gray-200 shadow-sm transition-all duration-200 hover:shadow-md">
                 <i class="fa fa-reply"></i>
                 Back to List
@@ -25,7 +25,7 @@
                 <span class="font-semibold text-gray-700">Edit Commission Information</span>
             </div>
             <div class="p-6">
-                <form action="{{ route('admin.distribute-commission.update', $commission->id) }}" method="POST">
+                <form action="{{ route('admin.set-commission.update', $commission->id) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="mt-8 pt-5 border-t border-gray-100 flex flex-col sm:flex-row justify-end gap-3">
-                        <a href="{{ route('admin.distribute-commission.index') }}"
+                        <a href="{{ route('admin.set-commission.index') }}"
                            class="px-6 py-2.5 text-sm font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-all w-full sm:w-auto text-center">
                             Cancel
                         </a>

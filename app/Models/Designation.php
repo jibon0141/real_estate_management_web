@@ -12,6 +12,7 @@ class Designation extends Model
     protected $fillable = ['id','name'];
 
     public function user(){
-        return $this->belongsTo(User::class,'designation_id');
+        return $this->hasMany(User::class,'designation_id');
     }
 }
+
