@@ -67,7 +67,7 @@ class ProjectController extends Controller
             $request->validate([
                 'name'         => 'required|string|max:255|unique:projects,name',
                 'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-                'total_share'  => 'required|integer|min:1',
+                'total_share'  => 'required|numeric|min:0',
                 'description'  => 'nullable|string',
                 'status'       => 'required|in:0,1',
             ]);
@@ -122,7 +122,7 @@ class ProjectController extends Controller
         $request->validate([
             'name'         => 'required|string|max:255|unique:projects,name,' . $id,
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'total_share'  => 'required|integer|min:1',
+            'total_share'  => 'required|numeric|min:0',
             'description'  => 'nullable|string',
             'status'       => 'required|in:0,1',
         ]);

@@ -61,7 +61,7 @@
                             </label>
                             <input type="number" name="total_share" value="{{ old('total_share') }}"
                                    class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                   placeholder="Enter total share count" min="1">
+                                   placeholder="Enter total share amount" step="0.01" min="0">
                             @error('total_share')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror

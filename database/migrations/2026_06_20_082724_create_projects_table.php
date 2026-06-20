@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->tinyInteger('status')->default('1')->comment('0 = inactive,1 = active');
-            $table->decimal(10,2,'total_share')->default(0);
+            $table->decimal('total_share', 10, 2)->default(0);
             $table->longText('description')->nullable();
             $table->timestamps();
         });

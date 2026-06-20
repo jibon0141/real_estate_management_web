@@ -92,6 +92,7 @@
             </button>
             <div class="sidebar-dropdown-menu hidden">
                 <a href="{{ route('admin.project.index') }}">Project Management</a>
+                <a href="{{ route('admin.package.index') }}">Package Management</a>
             </div>
         </div>
 

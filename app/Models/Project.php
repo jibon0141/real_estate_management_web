@@ -16,4 +16,9 @@ class Project extends Model
         'total_share',
         'description',
     ];
+
+    public function packages()
+    {
+        return $this->hasMany(Package::class);
+    }
 }

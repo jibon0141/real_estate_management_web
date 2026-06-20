@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\DebitVoucher\DebitVoucherController;
 use App\Http\Controllers\Backend\GlAccount\GlAccountController;
 use App\Http\Controllers\Backend\Party\PartyController;
 use App\Http\Controllers\Backend\Project\ProjectController;
+use App\Http\Controllers\Backend\Package\PackageController;
 use App\Http\Controllers\Backend\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +77,15 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::get('/project/edit/{id}',[ProjectController::class,'edit'])->name('admin.project.edit');
         Route::put('/project/update/{id}',[ProjectController::class,'update'])->name('admin.project.update');
         Route::delete('/project/delete/{id}',[ProjectController::class,'destroy'])->name('admin.project.delete');
+    });
+
+    // Package Route
+    Route::group(['namespace'=>'Package'],function(){
+        Route::get('/package',[PackageController::class,'index'])->name('admin.package.index');
+        Route::match(['get','post'],'/package/create',[PackageController::class,'create'])->name('admin.package.create');
+        Route::get('/package/edit/{id}',[PackageController::class,'edit'])->name('admin.package.edit');
+        Route::put('/package/update/{id}',[PackageController::class,'update'])->name('admin.package.update');
+        Route::delete('/package/delete/{id}',[PackageController::class,'destroy'])->name('admin.package.delete');
     });
 
     // User Route
