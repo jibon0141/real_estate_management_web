@@ -25,7 +25,7 @@ class ProjectController extends Controller
                 })
                 ->addColumn('image', function ($row) {
                     if ($row->image) {
-                        return '<img src="' . asset('uploads/project/' . $row->image) . '" width="60" height="60" style="object-fit: cover;">';
+                        return '<img src="' . asset('image/project/' . $row->image) . '" width="60" height="60" style="object-fit: cover;">';
                     }
                     return 'N/A';
                 })
@@ -62,7 +62,7 @@ class ProjectController extends Controller
     {
         if ($request->isMethod('POST')) {
             $request->validate([
-                'name'         => 'required|string|max:255',
+                'name'         => 'required|string|max:255|unique:projects,name',
                 'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
                 'description'  => 'nullable|string',
                 'status'       => 'required|in:0,1',
@@ -77,7 +77,7 @@ class ProjectController extends Controller
                 ];
 
                 if ($request->hasFile('image')) {
-                    $data['image'] = $this->storeImage($request->file('image'), 'uploads/project');
+                    $data['image'] = $this->storeImage($request->file('image'), 'image/project');
                 }
 
                 Project::create($data);
@@ -115,7 +115,7 @@ class ProjectController extends Controller
         }
 
         $request->validate([
-            'name'         => 'required|string|max:255',
+            'name'         => 'required|string|max:255|unique:projects,name,' . $id,
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'description'  => 'nullable|string',
             'status'       => 'required|in:0,1',
@@ -130,9 +130,9 @@ class ProjectController extends Controller
 
             if ($request->hasFile('image')) {
                 if ($project->image) {
-                    $this->destroyImage($project->image, 'uploads/project');
+                    $this->destroyImage($project->image, 'image/project');
                 }
-                $data['image'] = $this->storeImage($request->file('image'), 'uploads/project');
+                $data['image'] = $this->storeImage($request->file('image'), 'image/project');
             }
 
             $project->update($data);
@@ -165,7 +165,7 @@ class ProjectController extends Controller
 
         try {
             if ($project->image) {
-                $this->destroyImage($project->image, 'uploads/project');
+                $this->destroyImage($project->image, 'image/project');
             }
 
             $project->delete();

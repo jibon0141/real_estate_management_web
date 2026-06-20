@@ -53,7 +53,7 @@
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                             <div id="imagePreview" class="mt-2 {{ $project->image ? '' : 'hidden' }}">
-                                <img src="{{ $project->image ? asset('uploads/project/' . $project->image) : '' }}"
+                                <img src="{{ $project->image ? asset('image/project/' . $project->image) : '' }}"
                                      alt="Preview"
                                      class="w-32 h-32 object-cover rounded-xl border border-gray-200">
                                 @if($project->image)
