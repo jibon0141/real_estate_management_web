@@ -29,8 +29,11 @@ class ProjectController extends Controller
                     }
                     return 'N/A';
                 })
+                ->addColumn('total_share', function ($row) {
+                    return $row->total_share ?? 0;
+                })
                 ->addColumn('description', function ($row) {
-                    return $row->description ?? 'N/A';
+                    return $row->description ?? '-';
                 })
                 ->addColumn('status', function ($row) {
                     return $row->status == 1
@@ -64,6 +67,7 @@ class ProjectController extends Controller
             $request->validate([
                 'name'         => 'required|string|max:255|unique:projects,name',
                 'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'total_share'  => 'required|integer|min:1',
                 'description'  => 'nullable|string',
                 'status'       => 'required|in:0,1',
             ]);
@@ -71,6 +75,7 @@ class ProjectController extends Controller
             try {
                 $data = [
                     'name'        => $request->name,
+                    'total_share' => $request->total_share,
                     'description' => $request->description,
                     'status'      => $request->status,
                     'created_at'  => now(),
@@ -117,6 +122,7 @@ class ProjectController extends Controller
         $request->validate([
             'name'         => 'required|string|max:255|unique:projects,name,' . $id,
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'total_share'  => 'required|integer|min:1',
             'description'  => 'nullable|string',
             'status'       => 'required|in:0,1',
         ]);
@@ -124,6 +130,7 @@ class ProjectController extends Controller
         try {
             $data = [
                 'name'        => $request->name,
+                'total_share' => $request->total_share,
                 'description' => $request->description,
                 'status'      => $request->status,
             ];

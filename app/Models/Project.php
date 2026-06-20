@@ -12,7 +12,8 @@ class Project extends Model
     protected $fillable = [
         'name',
         'image',
-        'description',
         'status',
+        'total_share',
+        'description',
     ];
 }

@@ -61,14 +61,14 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="flex flex-col md:col-span-2">
+                        <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
-                                Description
+                                Total Share <span class="text-red-500">*</span>
                             </label>
-                            <textarea name="description" rows="4"
-                                      class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                      placeholder="Enter project description">{{ old('description', $project->description) }}</textarea>
-                            @error('description')
+                            <input type="number" name="total_share" value="{{ old('total_share', $project->total_share) }}"
+                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
+                                   placeholder="Enter total share count" min="1">
+                            @error('total_share')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>
@@ -89,6 +89,17 @@
                                 </label>
                             </div>
                             @error('status')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="flex flex-col md:col-span-2">
+                            <label class="mb-2 text-sm font-medium text-gray-600">
+                                Description
+                            </label>
+                            <textarea name="description" rows="4"
+                                      class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
+                                      placeholder="Enter project description">{{ old('description', $project->description) }}</textarea>
+                            @error('description')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>
