@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
             CompanySettingSeeder::class,
             GlAccountsSeeder::class,
             DesignationSeeder::class,
-
+            CommissionSeeder::class,
         ]);
 
     }

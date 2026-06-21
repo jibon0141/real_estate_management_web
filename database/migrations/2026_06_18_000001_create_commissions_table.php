@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('commissions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('commission_setting_id')->unique();
+            $table->string('name')->unique();
             $table->decimal('commission_percentage', 5, 2);
             $table->timestamps();
         });

@@ -89,11 +89,11 @@
                         </div>
                         <div class="flex flex-col">
                             <label class="mb-2 text-sm font-medium text-gray-600">
-                                Share Count <span class="text-red-500">*</span>
+                               Land Share <span class="text-red-500">*</span>
                             </label>
                             <input type="number" name="share_count" value="{{ old('share_count') }}"
                                    class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
-                                   placeholder="Enter share count" step="0.01" min="0">
+                                   placeholder="Enter Land Share" step="0.01" min="0">
                             @error('share_count')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
@@ -117,6 +117,17 @@
                                    class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
                                    placeholder="Enter allotted share" step="0.01" min="0">
                             @error('allotted_share')
+                            <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="mb-2 text-sm font-medium text-gray-600">
+                                Booking Money <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="booking_money" value="{{ old('booking_money') }}"
+                                   class="form-input !rounded-xl !border-gray-200 !bg-gray-50 focus:!bg-white focus:!border-indigo-400 focus:!ring focus:!ring-indigo-200/50 !transition-all"
+                                   placeholder="Enter booking money" step="0.01" min="0">
+                            @error('booking_money')
                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                             @enderror
                         </div>

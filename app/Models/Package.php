@@ -19,6 +19,7 @@ class Package extends Model
         'extra_benefit',
         'share_count',
         'allotted_share',
+        'booking_money',
         'description',
         'status',
     ];

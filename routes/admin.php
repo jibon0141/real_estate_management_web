@@ -98,21 +98,11 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::delete('/user/delete/{id}',[UserController::class,'destroy'])->name('admin.user.delete');
     });
 
-    // Commission Setting Route
-    Route::group(['namespace'=>'CommissionSetting'],function(){
-        Route::get('/commission-setting',[CommissionSettingController::class,'index'])->name('admin.commission-setting.index');
-        Route::match(['get','post'],'/commission-setting/create',[CommissionSettingController::class,'create'])->name('admin.commission-setting.create');
-        Route::get('/commission-setting/edit/{id}',[CommissionSettingController::class,'edit'])->name('admin.commission-setting.edit');
-        Route::put('/commission-setting/update/{id}',[CommissionSettingController::class,'update'])->name('admin.commission-setting.update');
-        Route::delete('/commission-setting/delete/{id}',[CommissionSettingController::class,'destroy'])->name('admin.commission-setting.delete');
-    });
 
     // Set Commission Route
     Route::group(['namespace'=>'SetCommission'],function(){
         Route::get('/set-commission',[CommissionController::class,'index'])->name('admin.set-commission.index');
-        Route::match(['get','post'],'/set-commission/create',[CommissionController::class,'create'])->name('admin.set-commission.create');
-        Route::get('/set-commission/edit/{id}',[CommissionController::class,'edit'])->name('admin.set-commission.edit');
-        Route::put('/set-commission/update/{id}',[CommissionController::class,'update'])->name('admin.set-commission.update');
+        Route::post('/set-commission/save',[CommissionController::class,'save'])->name('admin.set-commission.save');
         Route::delete('/set-commission/delete/{id}',[CommissionController::class,'destroy'])->name('admin.set-commission.delete');
     });
 

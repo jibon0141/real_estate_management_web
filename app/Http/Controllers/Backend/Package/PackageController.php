@@ -42,6 +42,9 @@ class PackageController extends Controller
                 ->addColumn('allotted_share', function ($row) {
                     return number_format($row->allotted_share, 2) ?? 'N/A';
                 })
+                ->addColumn('booking_money', function ($row) {
+                    return number_format($row->booking_money, 2) ?? 'N/A';
+                })
                 ->addColumn('status', function ($row) {
                     return $row->status == 1
                         ? '<span class="px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Active</span>'
@@ -100,6 +103,7 @@ class PackageController extends Controller
                 'return_amount'  => 'required|numeric|min:0',
                 'return_time'    => 'required|string|max:255',
                 'extra_benefit'  => 'nullable|numeric|min:0',
+                'booking_money'  => 'required|numeric|min:0',
                 'share_count'    => 'required|numeric|min:0',
                 'allotted_share' => [
                     'required', 'numeric', 'min:0',
@@ -126,6 +130,7 @@ class PackageController extends Controller
                     'return_amount'  => $request->return_amount,
                     'return_time'    => $request->return_time,
                     'extra_benefit'  => $request->extra_benefit,
+                    'booking_money'  => $request->booking_money,
                     'share_count'    => $request->share_count,
                     'allotted_share' => $request->allotted_share,
                     'description'    => $request->description,
@@ -175,6 +180,7 @@ class PackageController extends Controller
             'return_amount'  => 'required|numeric|min:0',
             'return_time'    => 'required|string|max:255',
             'extra_benefit'  => 'nullable|numeric|min:0',
+            'booking_money'  => 'required|numeric|min:0',
             'share_count'    => 'required|numeric|min:0',
             'allotted_share' => [
                 'required', 'numeric', 'min:0',
@@ -203,6 +209,7 @@ class PackageController extends Controller
                 'return_amount'  => $request->return_amount,
                 'return_time'    => $request->return_time,
                 'extra_benefit'  => $request->extra_benefit,
+                'booking_money'  => $request->booking_money,
                 'share_count'    => $request->share_count,
                 'allotted_share' => $request->allotted_share,
                 'description'    => $request->description,

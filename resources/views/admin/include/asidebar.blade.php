@@ -83,7 +83,6 @@
                 </svg>
             </button>
             <div class="sidebar-dropdown-menu hidden">
-                <a href="{{ route('admin.commission-setting.index') }}">Commission Settings</a>
                 <a href="{{ route('admin.set-commission.index') }}">Set Commission</a>
             </div>
         </div>
