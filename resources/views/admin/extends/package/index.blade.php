@@ -11,7 +11,7 @@
 @endsection
 @section('content')
 <div class="page-wrapper min-h-screen p-4 sm:p-6 lg:p-8" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);">
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-8xl mx-auto">
         @include('admin.include.message')
         <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
