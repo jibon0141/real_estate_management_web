@@ -20,9 +20,4 @@ class CompanySetting extends Model
     ];
 
 
-    public function mainAccounts(){
-        return $this->hasMany(MainAccount::class,'company_setting_id');
-    }
-
-
 }

@@ -27,24 +27,10 @@ class Account extends Model
         'is_default' => 'boolean',
     ];
 
-    // Relation with depo account
-    public function depoDueCollections(){
-        return $this->hasMany(DepoDueCollection::class, 'account_id', 'id');
-    }
-
-   //  Relation with Depo Account
-    public function depoMainAccounts(){
-        return $this->hasMany(DepoDueCollection::class, 'depo_account_id', 'id');
-    }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function depo()
-    {
-        return $this->belongsTo(Depo::class, 'depo_id');
     }
 
     public function debitVouchers(){
@@ -55,12 +41,6 @@ class Account extends Model
         return $this->hasMany(CreditVoucher::class, 'account_id', 'id');
     }
 
-    public function distributes()
-    {
-        return $this->hasMany(Distribute::class);
-    }
 
-    public function supplierPayments(){
-        return $this->hasMany(SupplierPayment::class);
-    }
+
 }

@@ -21,7 +21,6 @@ class CompanySettingController extends Controller
     public function update(Request $request, $id)
     {
         try {
-
             $request->validate([
                 'company_name' => 'required|string|max:255',
                 'address'      => 'required|string',

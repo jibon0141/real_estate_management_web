@@ -80,8 +80,8 @@ class MainAccountController extends Controller
             try {
                 DB::beginTransaction();
 
-                $userId = Auth::id(); // Admin ID
-                $depoId = 0;          // Main branch
+                $userId = Auth::id();
+                $depoId = 0;         
 
                 // If new account is marked as default
                 if ($request->has('is_default') && $request->is_default == 1) {
