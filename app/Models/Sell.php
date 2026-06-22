@@ -18,6 +18,7 @@ class Sell extends Model
         'total_amount',
         'paid_amount',
         'due_amount',
+        'current_due_amount',
         'take_return',
         'user_id',
         'account_id',

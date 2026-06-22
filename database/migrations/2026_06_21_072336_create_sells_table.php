@@ -18,7 +18,8 @@ return new class extends Migration
             $table->decimal('total_share_sell', 10, 2)->default(0);
             $table->decimal('total_amount',15,2);
             $table->decimal('paid_amount',15,2);
-            $table->decimal('due_amount',15,2);
+            $table->decimal('total_due_amount',15,2);
+            $table->decimal('current_due_amount',15,2);
             $table->tinyInteger('take_return')->comment('0 = no,1 = yes')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();

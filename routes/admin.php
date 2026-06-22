@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\Project\ProjectController;
 use App\Http\Controllers\Backend\Package\PackageController;
 use App\Http\Controllers\Backend\Sell\SellController;
 use App\Http\Controllers\Backend\User\UserController;
+use App\Http\Controllers\Backend\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -105,6 +106,12 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::get('/set-commission',[CommissionController::class,'index'])->name('admin.set-commission.index');
         Route::post('/set-commission/save',[CommissionController::class,'save'])->name('admin.set-commission.save');
         Route::delete('/set-commission/delete/{id}',[CommissionController::class,'destroy'])->name('admin.set-commission.delete');
+    });
+
+    // Profile Route
+    Route::group(['namespace' => 'Admin'], function () {
+        Route::get('/profile/password', [ProfileController::class, 'passwordEdit'])->name('admin.profile.password.edit');
+        Route::post('/profile/password/update', [ProfileController::class, 'passwordUpdate'])->name('admin.profile.password.update');
     });
 
     // Sell Route

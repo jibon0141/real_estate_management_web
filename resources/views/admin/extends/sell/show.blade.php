@@ -101,10 +101,10 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            @if($sell->sellInfo->extra_benefit && $sell->sell_type != 'on_installment')
+            @if($sell->sell_type != 'on_installment')
             <div class="bg-gradient-to-r from-purple-50 to-violet-50/60 rounded-xl px-4 py-3 border border-purple-100/60 shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wider font-medium">Extra Benefit</span>
-                <p class="text-base font-bold text-purple-700 mt-0.5">{{ $sell->sellInfo->extra_benefit }} / share</p>
+                <p class="text-base font-bold text-purple-700 mt-0.5">{{ $sell->take_return ? 'No' : 'Yes ('.number_format($sell->sellInfo->extra_benefit, 2).' / share)' }}</p>
             </div>
             @endif
             @if($sell->sell_type != 'on_installment')
