@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Backend\Package;
 use App\Http\Controllers\Controller;
 use App\Models\Package;
 use App\Models\Project;
+use App\Models\ShareInStock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -90,7 +92,10 @@ class PackageController extends Controller
             return redirect()->back()->with('error', 'Package Not Found.');
         }
 
-        return view('admin.extends.package.show', compact('package'));
+        $stock = ShareInStock::where('package_id', $id)->first();
+        $availableShare = $stock ? $stock->stock : 0;
+
+        return view('admin.extends.package.show', compact('package', 'availableShare'));
     }
 
     public function create(Request $request)
@@ -123,6 +128,9 @@ class PackageController extends Controller
             ]);
 
             try {
+
+                DB::beginTransaction();
+
                 $data = [
                     'project_id'     => $request->project_id,
                     'package_name'   => $request->package_name,
@@ -138,11 +146,20 @@ class PackageController extends Controller
                     'created_at'     => now(),
                 ];
 
-                Package::create($data);
+                $package= Package::create($data);
 
+                // Package Share In Stock
+                ShareInStock::create([
+                    'project_id'  => $request->project_id,
+                    'package_id'  => $package->id,
+                    'stock'       => $request->allotted_share,
+                ]);
+
+                DB::commit();
                 Log::info('Package Created Successfully');
                 return redirect()->back()->with('success', 'Package Created Successfully.');
             } catch (\Exception $e) {
+                DB::rollBack();
                 Log::error($e->getMessage());
                 return redirect()->back()->with('error', 'Package Create Failed.');
             }
@@ -202,6 +219,10 @@ class PackageController extends Controller
         ]);
 
         try {
+            DB::beginTransaction();
+
+            $oldAllotted = $package->allotted_share;
+
             $data = [
                 'project_id'     => $request->project_id,
                 'package_name'   => $request->package_name,
@@ -218,10 +239,23 @@ class PackageController extends Controller
 
             $package->update($data);
 
-            Log::info('Package Updated Successfully', ['package_id' => $package->id]);
+            $stock = ShareInStock::where('package_id', $package->id)->first();
 
+            if ($stock) {
+                if($oldAllotted > $request->allotted_share){
+                    $diff = $oldAllotted - $request->allotted_share;
+                    $stock->decrement('stock', $diff);
+                }elseif($oldAllotted < $request->allotted_share){
+                    $diff = $request->allotted_share - $oldAllotted;
+                    $stock->increment('stock', $diff);
+                }
+            }
+
+            DB::commit();
+            Log::info('Package Updated Successfully', ['package_id' => $package->id]);
             return redirect()->back()->with('success', 'Package Updated Successfully.');
         } catch (\Exception $e) {
+            DB::rollBack();
             Log::error('Package Update Failed', [
                 'package_id' => $id,
                 'error'      => $e->getMessage(),

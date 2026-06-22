@@ -356,6 +356,8 @@
 
         $('#user_id').select2({ dropdownParent: $('#confirmModal'), width: '100%' });
         $('#account_id').select2({ dropdownParent: $('#confirmModal'), width: '100%' });
+
+        updateDisplay();
     });
 </script>
 @endsection

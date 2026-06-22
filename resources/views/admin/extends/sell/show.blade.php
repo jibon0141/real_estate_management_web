@@ -101,16 +101,18 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            @if($sell->sellInfo->extra_benefit)
+            @if($sell->sellInfo->extra_benefit && $sell->sell_type != 'on_installment')
             <div class="bg-gradient-to-r from-purple-50 to-violet-50/60 rounded-xl px-4 py-3 border border-purple-100/60 shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wider font-medium">Extra Benefit</span>
                 <p class="text-base font-bold text-purple-700 mt-0.5">{{ $sell->sellInfo->extra_benefit }} / share</p>
             </div>
             @endif
+            @if($sell->sell_type != 'on_installment')
             <div class="bg-gradient-to-r from-amber-50 to-yellow-50/60 rounded-xl px-4 py-3 border border-amber-100/60 shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wider font-medium">Return Preference</span>
                 <p class="text-base font-bold text-amber-700 mt-0.5">{{ $sell->take_return ? 'Yes (Return: ৳'.number_format($sell->sellInfo->return_amount,2).')' : 'No' }}</p>
             </div>
+            @endif
             @if($sell->sell_type == 'on_installment')
             <div class="bg-gradient-to-r from-blue-50 to-indigo-50/60 rounded-xl px-4 py-3 border border-blue-100/60 shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wider font-medium">Booking Money</span>

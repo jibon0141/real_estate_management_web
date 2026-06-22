@@ -113,6 +113,8 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::get('/sell/options/{id}', [SellController::class, 'options'])->name('admin.sell.options');
         Route::get('/sell/cash/{id}', [SellController::class, 'cash'])->name('admin.sell.cash');
         Route::post('/sell/cash/store', [SellController::class, 'storeCash'])->name('admin.sell.cash.store');
+        Route::get('/sell/installment/{id}', [SellController::class, 'installment'])->name('admin.sell.installment');
+        Route::post('/sell/installment/store', [SellController::class, 'storeInstallment'])->name('admin.sell.installment.store');
         Route::get('/sell/show/{id}', [SellController::class, 'show'])->name('admin.sell.show');
         Route::get('/sell/all', [SellController::class, 'all'])->name('admin.sell.all');
     });

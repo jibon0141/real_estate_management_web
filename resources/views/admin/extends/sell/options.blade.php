@@ -55,7 +55,7 @@
                 </div>
             </a>
 
-            <a href="#" class="group bg-white rounded-2xl shadow-lg shadow-indigo-100/50 border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <a href="{{ route('admin.sell.installment', $package->id) }}" class="group bg-white rounded-2xl shadow-lg shadow-indigo-100/50 border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div class="h-40 bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-600 relative flex items-center justify-center">
                     <div class="absolute inset-0 opacity-20">
                         <div class="absolute -top-10 -right-10 w-40 h-40 bg-white rounded-full"></div>

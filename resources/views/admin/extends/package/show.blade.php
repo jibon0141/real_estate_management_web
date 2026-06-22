@@ -151,6 +151,19 @@
                         </div>
                     </div>
 
+                    <div class="relative group bg-gradient-to-br from-green-50 to-green-100/50 rounded-xl p-5 border border-green-200/50 hover:shadow-lg hover:shadow-green-200/40 hover:-translate-y-0.5 transition-all duration-300">
+                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-green-400/10 rounded-full blur-md"></div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="w-9 h-9 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white shadow-md shadow-green-200">
+                                <i class="fa fa-boxes text-xs"></i>
+                            </span>
+                            <span class="text-xs font-semibold text-green-600 uppercase tracking-wider">Available Share</span>
+                        </div>
+                        <div class="relative text-3xl font-extrabold text-green-700 tracking-tight">{{ number_format($availableShare, 2) }}
+                            <div class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-green-400/30 blur-sm"></div>
+                        </div>
+                    </div>
+
                     <div class="relative group bg-gradient-to-br from-teal-50 to-teal-100/50 rounded-xl p-5 border border-teal-200/50 hover:shadow-lg hover:shadow-teal-200/40 hover:-translate-y-0.5 transition-all duration-300">
                         <div class="absolute -top-2 -right-2 w-8 h-8 bg-teal-400/10 rounded-full blur-md"></div>
                         <div class="flex items-center gap-3 mb-2">
@@ -173,24 +186,19 @@
                         </div>
                         <div class="relative text-2xl font-extrabold text-gray-800 tracking-tight">{{ $project->name ?? 'N/A' }}</div>
                     </div>
-                        <div class="relative text-2xl font-extrabold text-gray-800 tracking-tight">{{ $project->name ?? 'N/A' }}
-
-                            <div class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-cyan-400/30 blur-sm"></div>
-                        </div>
-                    </div>
                 </div>
 
-                @if ($package->description)
-                    <div class="mt-6 pt-5 border-t border-gray-100">
-                        <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3 flex items-center gap-2">
-                            <i class="fa fa-align-left text-gray-400"></i>
-                            Description
-                        </h4>
-                        <div class="bg-gray-50/80 rounded-xl p-5 border border-gray-100">
-                            <p class="text-gray-600 text-sm leading-relaxed">{{ $package->description }}</p>
+                    @if ($package->description)
+                        <div class="mt-6 pt-5 border-t border-gray-100">
+                            <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <i class="fa fa-align-left text-gray-400"></i>
+                                Description
+                            </h4>
+                            <div class="bg-gray-50/80 rounded-xl p-6 border border-gray-100 break-words">
+                                <p class="text-gray-600 text-sm leading-relaxed">{{ $package->description }}</p>
+                            </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
 
                 <div class="mt-6 pt-5 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
                     <span>Created: {{ $package->created_at ? $package->created_at->format('M d, Y h:i A') : 'N/A' }}</span>

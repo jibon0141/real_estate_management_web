@@ -9,6 +9,7 @@ use App\Models\Package;
 use App\Models\Project;
 use App\Models\Sell;
 use App\Models\SellInfo;
+use App\Models\ShareInStock;
 use App\Models\User;
 use App\Models\Account;
 use Illuminate\Http\Request;
@@ -93,6 +94,7 @@ class SellController extends Controller
 
         try{
             DB::beginTransaction();
+
             $package = Package::with('project')->find($request->package_id);
 
             if(empty($package)){
@@ -100,7 +102,9 @@ class SellController extends Controller
                 return redirect()->back()->with('error','Package Not Found!');
             }
 
-            // Available Share In the Package
+            if ($package->status != 1) {
+                return redirect()->back()->with('error', 'Package is not active!');
+            }
 
             $totalSold = Sell::whereHas('sellInfo', function ($q) use ($package) {
                 $q->where('package_id', $package->id);
@@ -117,9 +121,6 @@ class SellController extends Controller
 
             $availableShare = $package->allotted_share - $totalSold - $totalBenefitTaken;
 
-
-            // Requested Share With or without Benefit Share
-
             $qty = $request->share_qty;
             $totalShareRequested = $package->share_count * $qty;
 
@@ -127,12 +128,9 @@ class SellController extends Controller
                 $totalShareRequested += ($package->extra_benefit ?? 0) * $qty;
             }
 
-
-            // Validation of available share
             if ($totalShareRequested > $availableShare) {
                 return redirect()->back()->with('error', 'You cannot sell more than ' . number_format($availableShare, 2) . ' shares. Requested: ' . number_format($totalShareRequested, 2));
             }
-
 
             $qty = $request->share_qty;
             $totalAmount = $package->package_price * $qty;
@@ -165,23 +163,16 @@ class SellController extends Controller
                 'booking_money'  => $package->booking_money,
             ]);
 
-            // Active the user when he has a purchase
-            User::where('id',$request->user_id)->update([
-                'status' => 1,
-            ]);
+            User::where('id',$request->user_id)->update(['status' => 1]);
 
-
-            // Paid Amount Insert At Bank Account
             Account::where('id',$request->account_id)->increment('balance',$totalAmount);
             $account = Account::find($request->account_id);
 
-
-            // Company Cash Flow Entry
             CompanyCashFlow::create([
                 'date'           => $sell->sell_date,
                 'description'    => 'Cash Sale - '.$package->package_name . ' ('.$package->package_no.')',
                 'invoice_id'     => $sell->sell_voucher,
-                'dr_amount'      => 0  ,
+                'dr_amount'      => 0,
                 'cr_amount'      => $totalAmount,
                 'balance'        => $account->balance,
                 'account_id'     => $request->account_id,
@@ -189,6 +180,15 @@ class SellController extends Controller
                 'voucher_id'     => $sell->id,
             ]);
 
+            // Stock Share Management
+
+           $stock = ShareInStock::where('package_id',$request->package_id)->where('project_id',$package->project_id)->first();
+           $oldStock = $stock->stock;
+           $currentStock = $oldStock - $totalShareRequested;
+
+           $stock->update([
+               'stock' => $currentStock,
+           ]);
 
             DB::commit();
             Log::info('Cash Sell Completed. Voucher: ' . $sell->sell_voucher);
@@ -200,6 +200,160 @@ class SellController extends Controller
             return redirect()->back()->with('error','Cash Sale Denied!');
         }
 
+    }
+
+    public function installment($id)
+    {
+        $package = Package::with('project')->find($id);
+
+        if(empty($package)){
+            Log::info('Package Not Found!');
+            return redirect()->back()->with('error', 'Package Not Found!');
+        }
+
+        $totalSold = Sell::whereHas('sellInfo', function ($q) use ($id) {
+            $q->where('package_id', $id);
+        })->sum('total_share_sell');
+
+        $totalBenefitTaken = SellInfo::where('package_id', $id)
+            ->whereHas('sell', function ($q) {
+                $q->where('take_return', 0);
+            })
+            ->get()
+            ->sum(function ($info) {
+                return $info->extra_benefit * $info->sell->sell_quantity;
+            });
+
+        $users = User::where('user_type', 'user')->get();
+        $accounts = Account::where('status', 1)->get();
+        $defaultAccount = Account::where('status', 1)->where('is_default', 1)->first();
+
+        return view('admin.extends.sell.installment', compact('package', 'totalSold', 'totalBenefitTaken', 'users', 'accounts', 'defaultAccount'));
+    }
+
+    public function storeInstallment(Request $request)
+    {
+        $request->validate([
+            'package_id'          => 'required|exists:packages,id',
+            'share_qty'           => 'required|numeric|min:1',
+            'user_id'             => 'required|exists:users,id',
+            'account_id'          => 'required|exists:accounts,id',
+            'admin_password'      => 'required',
+            'booking_money'       => 'required|numeric|min:0',
+            'installment_number'  => 'required|integer|min:1',
+        ]);
+
+        if (!Hash::check($request->admin_password, auth()->user()->password)) {
+            return redirect()->back()->with('error', 'Invalid admin password!');
+        }
+
+        try{
+
+            DB::beginTransaction();
+
+            $package = Package::with('project')->find($request->package_id);
+
+            if(empty($package)){
+                Log::info('Package Not Found!');
+                return redirect()->back()->with('error','Package Not Found!');
+            }
+
+            if ($package->status != 1) {
+                return redirect()->back()->with('error', 'Package is not active!');
+            }
+
+            $totalSold = Sell::whereHas('sellInfo', function ($q) use ($package) {
+                $q->where('package_id', $package->id);
+            })->sum('total_share_sell');
+
+            $totalBenefitTaken = SellInfo::where('package_id', $package->id)
+                ->whereHas('sell', function ($q) {
+                    $q->where('take_return', 0);
+                })
+                ->get()
+                ->sum(function ($info) {
+                    return $info->extra_benefit * $info->sell->sell_quantity;
+                });
+
+            $availableShare = $package->allotted_share - $totalSold - $totalBenefitTaken;
+
+            $qty = $request->share_qty;
+            $totalShareRequested = $package->share_count * $qty;
+
+            if ($totalShareRequested > $availableShare) {
+                return redirect()->back()->with('error', 'You cannot sell more than ' . number_format($availableShare, 2) . ' shares. Requested: ' . number_format($totalShareRequested, 2));
+            }
+
+            $qty = $request->share_qty;
+            $totalAmount = $package->package_price * $qty;
+            $totalShareSell = $package->share_count * $qty;
+            $bookingMoney = $request->booking_money;
+            $installmentNumber = $request->installment_number;
+            $installmentAmount = $installmentNumber > 0 ? ($totalAmount - $bookingMoney) / $installmentNumber : 0;
+
+            $sell = Sell::create([
+                'sell_date'           => today(),
+                'sell_type'           => 'on_installment',
+                'sell_quantity'       => $qty,
+                'total_share_sell'    => $totalShareSell,
+                'total_amount'        => $totalAmount,
+                'paid_amount'         => $bookingMoney,
+                'due_amount'          => $totalAmount - $bookingMoney,
+                'user_id'             => $request->user_id,
+                'account_id'          => $request->account_id,
+                'installment_number'  => $installmentNumber,
+                'installment_amount'  => $installmentAmount,
+            ]);
+
+            SellInfo::create([
+                'sell_id'        => $sell->id,
+                'project_id'     => $package->project_id,
+                'package_id'     => $package->id,
+                'package_price'  => $package->package_price,
+                'return_amount'  => 0,
+                'return_time'    => 0,
+                'extra_benefit'  => 0,
+                'share_count'    => $package->share_count,
+                'booking_money'  => $package->booking_money,
+            ]);
+
+            User::where('id',$request->user_id)->update(['status' => 1]);
+
+            Account::where('id',$request->account_id)->increment('balance', $bookingMoney);
+            $account = Account::find($request->account_id);
+
+            CompanyCashFlow::create([
+                'date'           => $sell->sell_date,
+                'description'    => 'Installment Sale (Booking) - '.$package->package_name . ' ('.$package->package_no.')',
+                'invoice_id'     => $sell->sell_voucher,
+                'dr_amount'      => 0,
+                'cr_amount'      => $bookingMoney,
+                'balance'        => $account->balance,
+                'account_id'     => $request->account_id,
+                'voucher_route'  => 'admin.sell.show',
+                'voucher_id'     => $sell->id,
+            ]);
+
+            // Stock Share Management
+
+            $stock = ShareInStock::where('package_id',$request->package_id)->where('project_id',$package->project_id)->first();
+            $oldStock = $stock->stock;
+            $currentStock = $oldStock - $totalShareRequested;
+
+            $stock->update([
+                'stock' => $currentStock,
+            ]);
+
+
+            DB::commit();
+            Log::info('Installment Sell Completed. Voucher: ' . $sell->sell_voucher);
+            return redirect()->route('admin.sell.all')->with('success', 'Installment sale completed successfully. Voucher: ' . $sell->sell_voucher);
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return redirect()->back()->with('error','Installment Sale Denied!');
+        }
     }
 
     public function show($id)

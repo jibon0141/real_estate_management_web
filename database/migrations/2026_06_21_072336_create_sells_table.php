@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('total_amount',15,2);
             $table->decimal('paid_amount',15,2);
             $table->decimal('due_amount',15,2);
-            $table->tinyInteger('take_return')->comment('0 = no,1 = yes');
+            $table->tinyInteger('take_return')->comment('0 = no,1 = yes')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
             $table->integer('installment_number')->default(0);
