@@ -1,0 +1,214 @@
+<?php
+
+namespace App\Http\Controllers\Backend\Project;
+
+use App\Http\Controllers\Controller;
+use App\Models\Package;
+use App\Models\Project;
+use App\Traits\ManageImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
+
+class ProjectController extends Controller
+{
+    use ManageImage;
+
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $projects = Project::get();
+
+            return Datatables::of($projects)
+                ->addIndexColumn()
+                ->addColumn('name', function ($row) {
+                    return $row->name ?? 'N/A';
+                })
+                ->addColumn('image', function ($row) {
+                    if ($row->image) {
+                        return '<img src="' . asset('image/project/' . $row->image) . '" width="60" height="60" style="object-fit: cover;">';
+                    }
+                    return 'N/A';
+                })
+                ->addColumn('total_share', function ($row) {
+                    return $row->total_share ?? 0;
+                })
+                ->addColumn('description', function ($row) {
+                    return $row->description ?? '-';
+                })
+                ->addColumn('status', function ($row) {
+                    return $row->status == 1
+                        ? '<span class="px-3 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">Active</span>'
+                        : '<span class="px-3 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">Inactive</span>';
+                })
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('admin.project.edit', $row->id);
+
+                    return '
+    <div class="flex gap-1.5">
+        <a href="' . $editUrl . '"
+           class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-sm shadow-sky-200 hover:shadow-md hover:shadow-sky-300 hover:-translate-y-0.5 transition-all duration-200"
+           title="Edit">
+            <i class="fa fa-edit text-xs"></i>
+        </a>
+        <button onclick="deleteItem(' . $row->id . ')"
+                class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-rose-400 to-red-500 hover:from-rose-500 hover:to-red-600 text-white shadow-sm shadow-rose-200 hover:shadow-md hover:shadow-rose-300 hover:-translate-y-0.5 transition-all duration-200"
+                title="Delete">
+            <i class="fa fa-trash text-xs"></i>
+        </button>
+    </div>
+    ';
+                })
+                ->rawColumns(['image', 'status', 'action'])
+                ->make(true);
+        }
+
+        return view('admin.extends.project.index');
+    }
+
+    public function create(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $request->validate([
+                'name'         => 'required|string|max:255|unique:projects,name',
+                'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+                'total_share'  => 'required|numeric|min:0',
+                'description'  => 'nullable|string',
+                'status'       => 'required|in:0,1',
+            ]);
+
+            try {
+                $data = [
+                    'name'        => $request->name,
+                    'total_share' => $request->total_share,
+                    'description' => $request->description,
+                    'status'      => $request->status,
+                    'created_at'  => now(),
+                ];
+
+                if ($request->hasFile('image')) {
+                    $data['image'] = $this->storeImage($request->file('image'), 'image/project');
+                }
+
+                Project::create($data);
+
+                Log::info('Project Created Successfully');
+                return redirect()->back()->with('success', 'Project Created Successfully.');
+            } catch (\Exception $e) {
+                Log::error($e->getMessage());
+                return redirect()->back()->with('error', 'Project Create Failed.');
+            }
+        }
+
+        return view('admin.extends.project.create');
+    }
+
+    public function edit($id)
+    {
+        $project = Project::where('id', $id)->first();
+
+        if (empty($project)) {
+            Log::info('Project Not Found', ['project_id' => $id]);
+            return redirect()->back()->with('error', 'Project Not Found.');
+        }
+
+        return view('admin.extends.project.edit', compact('project'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $project = Project::where('id', $id)->first();
+
+        if (empty($project)) {
+            Log::info('Project Not Found', ['project_id' => $id]);
+            return redirect()->back()->with('error', 'Project Not Found.');
+        }
+
+        $request->validate([
+            'name'         => 'required|string|max:255|unique:projects,name,' . $id,
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'total_share'  => 'required|numeric|min:0',
+            'description'  => 'nullable|string',
+            'status'       => 'required|in:0,1',
+        ]);
+
+        try {
+            $data = [
+                'name'        => $request->name,
+                'total_share' => $request->total_share,
+                'description' => $request->description,
+                'status'      => $request->status,
+            ];
+
+            if ($request->hasFile('image')) {
+                if ($project->image) {
+                    $this->destroyImage($project->image, 'image/project');
+                }
+                $data['image'] = $this->storeImage($request->file('image'), 'image/project');
+            }
+
+            $project->update($data);
+
+            Log::info('Project Updated Successfully', ['project_id' => $project->id]);
+
+            return redirect()->back()->with('success', 'Project Updated Successfully.');
+        } catch (\Exception $e) {
+            Log::error('Project Update Failed', [
+                'project_id' => $id,
+                'error'      => $e->getMessage(),
+            ]);
+
+            return redirect()->back()->with('error', 'Project Update Failed.');
+        }
+    }
+
+    public function destroy($id)
+    {
+        $project = Project::where('id', $id)->first();
+
+        if (empty($project)) {
+            Log::info('Project Not Found', ['project_id' => $id]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Project not found.'
+            ], 404);
+        }
+
+        try {
+            $package = Package::where('project_id', $project->id)->first();
+
+            if(!empty($package)){
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Project can not be deleted, it is associated with package.'
+                ], 400);
+
+            }
+
+
+            if ($project->image) {
+                $this->destroyImage($project->image, 'image/project');
+            }
+
+            $project->delete();
+
+            Log::info('Project Deleted Successfully', ['project_id' => $id]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Project deleted successfully.'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Project Delete Failed', [
+                'project_id' => $id,
+                'error'      => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Project delete failed.'
+            ], 500);
+        }
+    }
+}

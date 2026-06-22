@@ -2,12 +2,19 @@
 
 use App\Http\Controllers\Backend\Account\MainAccountController;
 use App\Http\Controllers\Backend\ChartOfAccount\ChartOfAccountController;
+use App\Http\Controllers\Backend\CommissionSetting\CommissionSettingController;
+use App\Http\Controllers\Backend\Designation\DesignationController;
+use App\Http\Controllers\Backend\SetCommission\CommissionController;
 use App\Http\Controllers\Backend\CompanySetting\CompanySettingController;
 use App\Http\Controllers\Backend\CreditVoucher\CreditVoucherController;
 use App\Http\Controllers\Backend\DebitVoucher\DebitVoucherController;
 use App\Http\Controllers\Backend\GlAccount\GlAccountController;
 use App\Http\Controllers\Backend\Party\PartyController;
+use App\Http\Controllers\Backend\Project\ProjectController;
+use App\Http\Controllers\Backend\Package\PackageController;
+use App\Http\Controllers\Backend\Sell\SellController;
 use App\Http\Controllers\Backend\User\UserController;
+use App\Http\Controllers\Backend\Admin\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -65,6 +72,25 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::delete('/party/delete/{id}',[PartyController::class,'destroy'])->name('admin.party.delete');
     });
 
+    // Project Route
+    Route::group(['namespace'=>'Project'],function(){
+        Route::get('/project',[ProjectController::class,'index'])->name('admin.project.index');
+        Route::match(['get','post'],'/project/create',[ProjectController::class,'create'])->name('admin.project.create');
+        Route::get('/project/edit/{id}',[ProjectController::class,'edit'])->name('admin.project.edit');
+        Route::put('/project/update/{id}',[ProjectController::class,'update'])->name('admin.project.update');
+        Route::delete('/project/delete/{id}',[ProjectController::class,'destroy'])->name('admin.project.delete');
+    });
+
+    // Package Route
+    Route::group(['namespace'=>'Package'],function(){
+        Route::get('/package',[PackageController::class,'index'])->name('admin.package.index');
+        Route::get('/package/show/{id}',[PackageController::class,'show'])->name('admin.package.show');
+        Route::match(['get','post'],'/package/create',[PackageController::class,'create'])->name('admin.package.create');
+        Route::get('/package/edit/{id}',[PackageController::class,'edit'])->name('admin.package.edit');
+        Route::put('/package/update/{id}',[PackageController::class,'update'])->name('admin.package.update');
+        Route::delete('/package/delete/{id}',[PackageController::class,'destroy'])->name('admin.package.delete');
+    });
+
     // User Route
     Route::group(['namespace'=>'User'],function(){
         Route::get('/user',[UserController::class,'index'])->name('admin.user.index');
@@ -72,6 +98,32 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::get('/user/edit/{id}',[UserController::class,'edit'])->name('admin.user.edit');
         Route::put('/user/update/{id}',[UserController::class,'update'])->name('admin.user.update');
         Route::delete('/user/delete/{id}',[UserController::class,'destroy'])->name('admin.user.delete');
+    });
+
+
+    // Set Commission Route
+    Route::group(['namespace'=>'SetCommission'],function(){
+        Route::get('/set-commission',[CommissionController::class,'index'])->name('admin.set-commission.index');
+        Route::post('/set-commission/save',[CommissionController::class,'save'])->name('admin.set-commission.save');
+        Route::delete('/set-commission/delete/{id}',[CommissionController::class,'destroy'])->name('admin.set-commission.delete');
+    });
+
+    // Profile Route
+    Route::group(['namespace' => 'Admin'], function () {
+        Route::get('/profile/password', [ProfileController::class, 'passwordEdit'])->name('admin.profile.password.edit');
+        Route::post('/profile/password/update', [ProfileController::class, 'passwordUpdate'])->name('admin.profile.password.update');
+    });
+
+    // Sell Route
+    Route::group(['namespace' => 'Sell'], function () {
+        Route::get('/sell', [SellController::class, 'index'])->name('admin.sell.index');
+        Route::get('/sell/options/{id}', [SellController::class, 'options'])->name('admin.sell.options');
+        Route::get('/sell/cash/{id}', [SellController::class, 'cash'])->name('admin.sell.cash');
+        Route::post('/sell/cash/store', [SellController::class, 'storeCash'])->name('admin.sell.cash.store');
+        Route::get('/sell/installment/{id}', [SellController::class, 'installment'])->name('admin.sell.installment');
+        Route::post('/sell/installment/store', [SellController::class, 'storeInstallment'])->name('admin.sell.installment.store');
+        Route::get('/sell/show/{id}', [SellController::class, 'show'])->name('admin.sell.show');
+        Route::get('/sell/all', [SellController::class, 'all'])->name('admin.sell.all');
     });
 
     // Debit Voucher Route
@@ -101,6 +153,11 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
         Route::get('/credit-voucher/get-parties', [CreditVoucherController::class, 'getParties'])->name('admin.credit-voucher.get-parties');
         Route::get('/credit-voucher/get-bank-accounts', [CreditVoucherController::class, 'getBankAccounts'])->name('admin.credit-voucher.get-bank-accounts');
         Route::get('/credit-voucher/get-income-coa', [CreditVoucherController::class, 'getIncomeCoa'])->name('admin.credit-voucher.get-income-coa');
+    });
+
+    // Designation Route
+    Route::group(['namespace' => 'Designation'], function () {
+        Route::get('/designation',[DesignationController::class,'index'])->name('admin.designation.index');
     });
 
 

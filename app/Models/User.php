@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'user_type',
         'ref_id',
+        'designation_id',
         'status',
         'password',
         'role'
@@ -50,6 +51,14 @@ class User extends Authenticatable
         'created_at' => 'datetime',
     ];
 
+    public function designation(){
+        return $this->belongsTo(Designation::class,'designation_id');
+    }
+
+    public function sells(){
+        return $this->hasMany(Sell::class);
+    }
+
 
     protected static function booted()
     {
@@ -65,3 +74,4 @@ class User extends Authenticatable
 
 
 }
+

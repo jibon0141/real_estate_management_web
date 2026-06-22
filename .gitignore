@@ -3,6 +3,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/image/project
+/public/image/company_favicon
+/public/image/company_logo
 /storage/*.key
 /vendor
 .env

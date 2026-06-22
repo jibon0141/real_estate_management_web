@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In | Tahsin Pharma</title>
+    <title>Sign In | Easy IT Solution LTD.</title>
     <script src="{{ asset('assets/backend_assets/js/tailwind/tailwind.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -208,7 +208,7 @@
 
     <div class="text-center mb-7 animate-in">
         <div class="brand-icon mx-auto mb-4">
-            <span>T</span>
+            <span>E</span>
         </div>
         <h1 class="text-2xl font-bold text-white tracking-tight">Welcome Back</h1>
         <p class="text-sm text-blue-200/60 mt-1">Sign in to your account</p>

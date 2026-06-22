@@ -18,7 +18,7 @@ class SuperAdminMiddleware
 
         $user = Auth::user();
 
-        if ($user->status != 1) {
+        if ($user->user_type !== 'user' && $user->status != 1) {
             Auth::logout();
             return redirect('/')->with('error', 'Account inactive');
         }

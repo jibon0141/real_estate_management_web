@@ -21,12 +21,14 @@ class GlAccountController extends controller
                     $editUrl = route('admin.gl-account.edit', $row->id);
 
                     return '
-                    <div class="flex gap-2">
-                        <a href="'.$editUrl.'" class="px-2 py-1 bg-blue-500 text-white text-xs rounded">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                    </div>
-                ';
+    <div class="flex gap-1.5">
+        <a href="' . $editUrl . '"
+           class="w-8 h-8 flex items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white shadow-sm shadow-sky-200 hover:shadow-md hover:shadow-sky-300 hover:-translate-y-0.5 transition-all duration-200"
+           title="Edit">
+            <i class="fa fa-edit text-xs"></i>
+        </a>
+    </div>
+    ';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

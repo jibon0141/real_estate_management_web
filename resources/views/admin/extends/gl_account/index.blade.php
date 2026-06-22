@@ -1,7 +1,14 @@
 @extends('admin.master')
+@section('app_styles')
+<style>
+    #glAccountTable tbody tr:nth-child(even) { background-color: #f8fafc; }
+    #glAccountTable tbody tr:hover { background-color: #eef2ff; }
+</style>
+@endsection
 @section('content')
 <div class="page-wrapper min-h-screen p-4 sm:p-6 lg:p-8" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8ecf8 100%);">
     <div class="max-w-7xl mx-auto">
+        @include('admin.include.message')
         <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
@@ -12,6 +19,11 @@
                 </h3>
                 <p class="text-sm text-gray-500 mt-1 ml-13">Manage general ledger accounts</p>
             </div>
+            <a href="{{url('/admin/dashboard')}}"
+               class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-200 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5">
+                <i class="fa fa-reply"></i>
+                Dashboard
+            </a>
         </div>
         <div class="bg-white/80 rounded-2xl shadow-lg shadow-indigo-100/50 border border-white/50 overflow-hidden">
             <div class="p-5 border-b border-gray-100 flex items-center justify-between">
