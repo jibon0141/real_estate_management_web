@@ -115,6 +115,7 @@
             </button>
             <div class="sidebar-dropdown-menu hidden">
                 <a href="{{ route('admin.sell.index') }}">Create Sales</a>
+                <a href="{{ route('admin.sell.all') }}">All Sales</a>
             </div>
         </div>
 

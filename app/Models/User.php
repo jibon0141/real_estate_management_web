@@ -55,6 +55,10 @@ class User extends Authenticatable
         return $this->belongsTo(Designation::class,'designation_id');
     }
 
+    public function sells(){
+        return $this->hasMany(Sell::class);
+    }
+
 
     protected static function booted()
     {

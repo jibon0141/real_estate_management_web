@@ -110,10 +110,10 @@
                                         </div>
                                     @endif
                                     <div class="pt-3">
-                                        <button class="w-full py-2.5 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 rounded-xl shadow-lg shadow-emerald-200 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5">
+                                        <a href="{{ route('admin.sell.options', $package->id) }}" class="block w-full py-2.5 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 rounded-xl shadow-lg shadow-emerald-200 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 text-center">
                                             <i class="fa fa-shopping-cart mr-1.5"></i>
                                             Sell This Package
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

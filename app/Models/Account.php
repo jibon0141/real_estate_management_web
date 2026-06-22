@@ -41,6 +41,10 @@ class Account extends Model
         return $this->hasMany(CreditVoucher::class, 'account_id', 'id');
     }
 
+    public function sells(){
+        return $this->hasMany(Sell::class);
+    }
+
 
 
 }

@@ -110,6 +110,11 @@ Route::middleware(['super_admin:admin','block_purchase_admin'])->group(function 
     // Sell Route
     Route::group(['namespace' => 'Sell'], function () {
         Route::get('/sell', [SellController::class, 'index'])->name('admin.sell.index');
+        Route::get('/sell/options/{id}', [SellController::class, 'options'])->name('admin.sell.options');
+        Route::get('/sell/cash/{id}', [SellController::class, 'cash'])->name('admin.sell.cash');
+        Route::post('/sell/cash/store', [SellController::class, 'storeCash'])->name('admin.sell.cash.store');
+        Route::get('/sell/show/{id}', [SellController::class, 'show'])->name('admin.sell.show');
+        Route::get('/sell/all', [SellController::class, 'all'])->name('admin.sell.all');
     });
 
     // Debit Voucher Route
